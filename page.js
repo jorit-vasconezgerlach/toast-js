@@ -1,4 +1,4 @@
-function toast(msg, data) {
+function toast(msg, data = {}) {
           //-> you can apply your own styles here, you may just keep the first five lines
           var style = `
           bottom: -315px; right: 15px;
@@ -22,9 +22,9 @@ function toast(msg, data) {
                     id: 'toast',
                     style: style,
                     innerText: msg,
-                    onclick: onclick = () => {
-                              data['callback']();
-                              document.getElementById('toastMessage').remove();
+                    onclick: () => {
+                              if(data['callback']) {data['callback']()};
+                              document.getElementById('toast').remove();
                     }
           });
           document.body.appendChild(toast);
