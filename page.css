@@ -1,0 +1,13 @@
+/* this is a sample css file, you don't need any of this */
+* {
+          padding: 0;
+          margin: 0;
+          box-sizing: border-box;
+          font-family: sans-serif;
+}
+body {
+          width: 100vw;
+          height: 95vh;
+          display: grid;
+          place-items: center;
+}
