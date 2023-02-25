@@ -8,7 +8,7 @@ function toast(msg, data = {}) {
           position: fixed;
 
           font-family: sans-serif;
-          width: 300px; max-width: 40%;
+          width: 100%; max-width: 300px;
           color: white;
           box-shadow: rgba(0, 0, 0, 0.2) 0px 30px 90px;
           padding: 0.4rem 0.8rem;
