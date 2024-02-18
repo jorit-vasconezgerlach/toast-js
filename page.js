@@ -1,40 +1,55 @@
-function toast(msg, data = {}) {
-          //-> you can apply your own styles here, you may just keep the first five lines
-          var style = `
-          bottom: -315px; right: 15px;
-          transition: .8s  cubic-bezier(0.25, 0.46, 0.45, 0.94);
-          cursor: pointer;
-          z-index: 10000;
-          position: fixed;
+function toast(message, {textColor = '#FFF', toastColor = '#888', toastProgressColor = '#999'} = {}) {
+    // toast with style
+    const toast = document.createElement('div');
+    toast.style = `
+        --translateLeft: -50%;
+        --translateTop: 100%;
+        left: 50%; bottom: 0;
+        padding: 15px 10px;
+        width: calc(100% - 20px);
+        min-height: 40px;
+        max-width: 350px;
+        word-wrap: break-word;
+        border-radius: 10px;
+        position: fixed;
+        color: ${textColor};
+        background: ${toastColor};
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+        z-index: 10000;
+        transform: translate(var(--translateLeft), var(--translateTop));
+        transition: 0.6s cubic-bezier(0.42, 0, 0.49, 1.26);
+        overflow: hidden;
+    `;
 
-          font-family: sans-serif;
-          width: 100%; max-width: 300px;
-          color: white;
-          box-shadow: rgba(0, 0, 0, 0.2) 0px 30px 90px;
-          padding: 0.4rem 0.8rem;
-          border: 1px solid #111;
-          background: #2d2d2d;
-          `;
-          if (document.getElementById('toast')) {
-                    document.getElementById('toast').remove();
-          }
-          var toast = Object.assign(document.createElement('div'), {
-                    id: 'toast',
-                    style: style,
-                    innerText: msg,
-                    onclick: () => {
-                              if(data['callback']) {data['callback']()};
-                              document.getElementById('toast').remove();
-                    }
-          });
-          document.body.appendChild(toast);
-          setTimeout(() => {
-                    toast.style.bottom = '20px';
-                    setTimeout(() => {
-                              toast.style.bottom = '-315px';
-                              setTimeout(() => {
-                                        toast.parentNode.removeChild(toast);
-                              }, 1000)
-                    }, 2000)
-          }, 100);
-}
+    // toast content
+    toast.innerHTML = `
+        <p>${message}</p>
+        <div id='toastProgress'></div>
+    `;
+
+    // toast progress with style
+    const toastProgress = toast.querySelector('#toastProgress');
+    toastProgress.style = `
+        bottom:0; left: 0;
+        position: absolute;
+        height: 5px;
+        width: 0%;
+        background: ${toastProgressColor};
+        transition: 3.6s cubic-bezier(0.42, 0, 0.49, 1.26);
+    `;
+
+    // append toast
+    document.body.appendChild(toast);
+
+    // display toast
+    setTimeout(()=>{
+        toast.style.setProperty('--translateTop', 'calc(0% - 20px)');
+        toastProgress.style.width = '100%';
+        setTimeout(()=>{
+                toast.style.setProperty('--translateTop', '100%');
+                setTimeout(()=>{
+                            document.body.removeChild(toast);
+                }, 600);
+        }, 3000);
+    }, 1);
+};
